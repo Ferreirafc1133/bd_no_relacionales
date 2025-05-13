@@ -1,0 +1,17 @@
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  cassandra:
+    image: cassandra
+    ports:
+      - "9042:9042"
+
+  dgraph:
+    image: dgraph/standalone:v21.03.0
+    ports:
+      - "8080:8080"  # HTTP API
+      - "8000:8000"  # Ratel UI 
+      - "9080:9080"  # GRPC 
