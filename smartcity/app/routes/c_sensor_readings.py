@@ -23,3 +23,10 @@ def get_sensor_readings(sensor_id: str):
         SELECT * FROM sensor_readings WHERE sensor_id=%s
     """, (sensor_id,))
     return [dict(row._asdict()) for row in result]
+
+@router.delete("/cassandra/sensor-readings/{sensor_id}")
+def delete_sensor_readings(sensor_id: str):
+    session.execute("""
+        DELETE FROM sensor_readings WHERE sensor_id=%s
+    """, (sensor_id,))
+    return {"message": "Sensor readings deleted"}

@@ -20,6 +20,11 @@ def get_traffic(road_id: str):
     result = session.execute("SELECT * FROM traffic_data WHERE road_id=%s", (road_id,))
     return [dict(row._asdict()) for row in result]
 
+@router.delete("/cassandra/traffic/{road_id}")
+def delete_traffic(road_id: str):
+    session.execute("DELETE FROM traffic_data WHERE road_id=%s", (road_id,))
+    return {"message": "Traffic data deleted"}
+
 
 ### ⚡ ENERGY USAGE
 @router.post("/cassandra/energy")
@@ -36,6 +41,11 @@ def insert_energy(data: dict):
 def get_energy(building_id: str):
     result = session.execute("SELECT * FROM energy_usage WHERE building_id=%s", (building_id,))
     return [dict(row._asdict()) for row in result]
+
+@router.delete("/cassandra/energy/{building_id}")
+def delete_energy(building_id: str):
+    session.execute("DELETE FROM energy_usage WHERE building_id=%s", (building_id,))
+    return {"message": "Energy usage deleted"}
 
 
 ### 🌡️ CLIMATE DATA
@@ -54,7 +64,13 @@ def get_climate(zone_id: str):
     result = session.execute("SELECT * FROM climate_data WHERE zone_id=%s", (zone_id,))
     return [dict(row._asdict()) for row in result]
 
+@router.delete("/cassandra/climate/{zone_id}")
+def delete_climate(zone_id: str):
+    session.execute("DELETE FROM climate_data WHERE zone_id=%s", (zone_id,))
+    return {"message": "Climate data deleted"}
 
+
+### 🚨 ALERTS
 @router.post("/cassandra/alerts")
 def insert_alert(data: dict):
     session.execute("""
@@ -70,8 +86,13 @@ def get_alerts(alert_type: str):
     result = session.execute("SELECT * FROM alerts WHERE alert_type=%s", (alert_type,))
     return [dict(row._asdict()) for row in result]
 
+@router.delete("/cassandra/alerts/{alert_type}")
+def delete_alerts(alert_type: str):
+    session.execute("DELETE FROM alerts WHERE alert_type=%s", (alert_type,))
+    return {"message": "Alerts deleted"}
 
 
+### 📟 SENSOR STATUS
 @router.post("/cassandra/sensor-status")
 def update_sensor_status(data: dict):
     session.execute("""
@@ -87,6 +108,13 @@ def get_sensor_status(sensor_id: str):
     result = session.execute("SELECT * FROM sensor_status WHERE sensor_id=%s", (sensor_id,))
     return [dict(row._asdict()) for row in result]
 
+@router.delete("/cassandra/sensor-status/{sensor_id}")
+def delete_sensor_status(sensor_id: str):
+    session.execute("DELETE FROM sensor_status WHERE sensor_id=%s", (sensor_id,))
+    return {"message": "Sensor status deleted"}
+
+
+### 🧾 USER ACTIVITY LOG
 @router.post("/cassandra/user-log")
 def insert_user_log(data: dict):
     session.execute("""
@@ -102,4 +130,7 @@ def get_user_log(user_id: str):
     result = session.execute("SELECT * FROM user_activity_log WHERE user_id=%s", (user_id,))
     return [dict(row._asdict()) for row in result]
 
-
+@router.delete("/cassandra/user-log/{user_id}")
+def delete_user_log(user_id: str):
+    session.execute("DELETE FROM user_activity_log WHERE user_id=%s", (user_id,))
+    return {"message": "User log deleted"}
